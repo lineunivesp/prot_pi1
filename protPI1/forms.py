@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from protPI1.models import User
 
@@ -55,3 +55,9 @@ class UpdateAccountForm(FlaskForm):
             if user:
                 raise ValidationError('Email já está registrado! Por favor, escolha outro!')
 
+
+class PostForm(FlaskForm):
+    title = StringField('Título', validators=[DataRequired()])
+    company = StringField('Empresa', validators=[DataRequired()])
+    content = TextAreaField('Descrição', validators=[DataRequired()])
+    submit = SubmitField('Publicar!')
