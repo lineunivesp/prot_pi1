@@ -7,13 +7,10 @@ from protPI1.models import User
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username',
-                           validators=[DataRequired(), Length(min=2, max=20)])
-    email = StringField('Email',
-                        validators=[DataRequired(), Email()])
+    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
+    email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Senha', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirmar senha',
-                                     validators=[DataRequired(), EqualTo('password')])
+    confirm_password = PasswordField('Confirmar senha', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Registrar')
 
     def validate_username(self, username):
@@ -28,18 +25,15 @@ class RegistrationForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    email = StringField('Email',
-                        validators=[DataRequired(), Email()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Senha', validators=[DataRequired()])
     remember = BooleanField('Lembrar-me!')
     submit = SubmitField('Logar!')
 
 
 class UpdateAccountForm(FlaskForm):
-    username = StringField('Username',
-                           validators=[DataRequired(), Length(min=2, max=20)])
-    email = StringField('Email',
-                        validators=[DataRequired(), Email()])
+    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
+    email = StringField('Email', validators=[DataRequired(), Email()])
     picture = FileField('Atualizar avatar!', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Atualizar!')
 
@@ -61,3 +55,18 @@ class PostForm(FlaskForm):
     company = StringField('Empresa', validators=[DataRequired()])
     content = TextAreaField('Descrição', validators=[DataRequired()])
     submit = SubmitField('Publicar!')
+
+
+class RequestResetForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Solicitar redefinição de senha!')
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is None:
+            raise ValidationError('Não há conta neste email! Pracisa se registrar primeiro!.')
+
+class ResetPasswordForm(FlaskForm):
+     password = PasswordField('Senha', validators=[DataRequired()])
+     confirm_password = PasswordField('Confirmar senha', validators=[DataRequired(), EqualTo('password')])
+     submit = SubmitField('Redefinir senha!')
