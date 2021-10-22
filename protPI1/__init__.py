@@ -33,8 +33,10 @@ def create_app(config_class=Config):
     from protPI1.users.routes import users
     from protPI1.posts.routes import posts
     from protPI1.main.routes import main
+    from protPI1.errors.handlers import errors
     app.register_blueprint(users)
     app.register_blueprint(posts)
     app.register_blueprint(main)
+    app.register_blueprint(errors)
 
     return app
