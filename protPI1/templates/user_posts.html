@@ -2,7 +2,7 @@
 {% block content %}
     <article class="media content-section">
         <div class="media-body">
-            <h2 class="article-title" >Publicações de {{ user.username }}: {{ posts.total }}</h2>
+            <h2 class="article-title" >Publicações de {{ user.nome }} {{ user.sobrenome }}: {{ posts.total }}</h2>
         </div>
     </article>
 
@@ -11,12 +11,21 @@
           <img class="rounded-circle article-img" src="{{ url_for('static', filename='img/' + post.author.imgfile) }}">
           <div class="media-body">
             <div class="article-metadata">
-              <a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+              <a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.nome }}</a>
               <small class="text-muted">{{ post.data_post.strftime("%d/%m/%Y") }}</small>
             </div>
             <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.titulo }}</a></h2>
             <small class="article-content">{{ post.empresa }}</small>
-            <p class="article-content">{{ post.descricao }}</p>
+            <small class="article-content">{{ post.cidade }} / </small>
+            <small class="article-content">{{ post.estado }}</small>
+            <p class="article-content">{{ post.descricao }}
+              <small class="article-content"><a class="" href="{{ post.link }}">{{ post.link }}</a></small>
+            </p>
+                {% if post.tipo_post == 'vaga' %}
+                  <small class="article-content">Publicação do tipo {{ post.tipo_post }} de nível {{ post.nivel_vaga }} em formato {{ post.mod_vaga }}.</small>
+                {% else %}
+                  <small class="article-content">Publicação do tipo {{ post.tipo_post }} de nível {{ post.nivel_curso }} em formato {{ post.mod_curso }}.</small>
+                {% endif %}
           </div>
         </article>
     {% endfor %}

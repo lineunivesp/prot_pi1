@@ -9,17 +9,18 @@ users = Blueprint('users', __name__)
 
 #Registrar Usuário (Provavelmente será retirado do principal)
 @users.route("/register", methods=['GET', 'POST'])
+@login_required
 def register():
-    if current_user.is_authenticated:
-        return redirect(url_for('main.home'))
+    # if current_user.is_authenticated:
+    #     return redirect(url_for('users.register'))
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username=form.username.data, email=form.email.data, senha=hashed_password)
+        user = User(username=form.username.data, nome=form.first_name.data, sobrenome=form.last_name.data, email=form.email.data, senha=hashed_password)
         db.session.add(user)
         db.session.commit()
-        flash('Sua conta foi criada! Está apto para logar!', 'success')
-        return redirect(url_for('users.login'))
+        flash('A conta foi criada! O novo usuário já pode logar!', 'success')
+        return redirect(url_for('users.register'))
     return render_template('register.html', title='Registrar', form=form)
 
 
@@ -30,13 +31,13 @@ def login():
         return redirect(url_for('main.home'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = User.query.filter_by(username=form.username.data).first()
         if user and bcrypt.check_password_hash(user.senha, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('main.home'))
         else:
-            flash('Login inválido. Favor checar email e senha!', 'danger')
+            flash('Login inválido. Favor checar username e senha!', 'danger')
     return render_template('login.html', title='Login', form=form)
 
 
@@ -57,15 +58,19 @@ def account():
             picture_file = save_picture(form.picture.data)
             current_user.imgfile = picture_file
         current_user.username = form.username.data
+        current_user.nome = form.first_name.data
+        current_user.sobrenome = form.last_name.data
         current_user.email = form.email.data
         db.session.commit()
         flash('Perfil atualizado!', 'success')
         return redirect(url_for('users.account'))
     elif request.method == 'GET':
         form.username.data = current_user.username
+        form.first_name.data = current_user.nome
+        form.last_name.data = current_user.sobrenome
         form.email.data = current_user.email
     image_file = url_for('static', filename='img/' + current_user.imgfile)
-    return render_template('account.html', title='Account', image_file=image_file, form=form)
+    return render_template('account.html', title='Perfil', image_file=image_file, form=form)
 
 
 # Página do autor e seus posts   (externos)
