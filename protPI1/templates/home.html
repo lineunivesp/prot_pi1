@@ -16,8 +16,15 @@
               <small class="article-content"><a class="" href="{{ post.link }}">{{ post.link }}</a></small>
             </p>
                 {% if post.tipo_post == 'vaga' %}
-                  <small class="article-content">Publicação do tipo {{ post.tipo_post }} de nível {{ post.nivel_vaga }} em formato {{ post.mod_vaga }}.</small>
-                {% else %}
+                      {# modelo da vaga (escritorio, hibrido, homeoffice) #}
+                    {% if post.mod_vaga == 'escritorio' %}
+                      <small class="article-content">Publicação do tipo {{ post.tipo_post }} de nível {{ post.nivel_vaga }} em formato {{ post.mod_vaga }}.</small>
+                    {% elif post.mod_vaga == 'hibrido'%}
+                      <small class="article-content">Publicação do tipo {{ post.tipo_post }} de nível {{ post.nivel_vaga }} em formato {{ post.mod_vaga }}.</small>
+                    {% else %}
+                       <small class="article-content">Publicação do tipo {{ post.tipo_post }} de nível {{ post.nivel_vaga }} em formato {{ post.mod_vaga }}.</small>
+                    {% endif %}
+                 {% else %}
                   <small class="article-content">Publicação do tipo {{ post.tipo_post }} de nível {{ post.nivel_curso }} em formato {{ post.mod_curso }}.</small>
                 {% endif %}
           </div>

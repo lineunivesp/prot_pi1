@@ -27,8 +27,7 @@ def send_reset_email(user):
      msg = Message('Solicitação de redefinição de senha', sender='noreply@demo.com', recipients=[user.email])
      msg.body = f'''Para redefinir sua senha, visite o seguinte link:
                         {url_for('users.reset_token', token=token, _external=True)}
-                        Se você não fez esta solicitação, simplesmente ignore esta mensagem 
-                        e nenhuma alteração será realizada. '''
+                    Se você não fez esta solicitação, simplesmente ignore esta mensagem e nenhuma alteração será realizada. '''
      mail.send(msg)
 
 
