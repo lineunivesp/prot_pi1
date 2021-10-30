@@ -18,7 +18,7 @@
       <small class="article-content">{{ post.cidade }} / </small>
       <small class="article-content">{{ post.estado }}</small>
             <p class="article-content">{{ post.descricao }}
-              <small class="article-content"><a class="" href="{{ post.link }}">{{ post.link }}</a></small>
+              <small class="article-content"><a class="" target="_blank" href="{{ post.link }}">{{ post.link }}</a></small>
             </p>
                 {% if post.tipo_post == 'vaga' %}
                   <small class="article-content">Publicação do tipo {{ post.tipo_post }} de nível {{ post.nivel_vaga }} em formato {{ post.mod_vaga }}.</small>
