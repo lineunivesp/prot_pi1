@@ -12,7 +12,7 @@
           <div class="media-body">
             <div class="article-metadata">
               <a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.nome }}</a>
-              <small class="text-muted">{{ post.data_post.strftime("%d/%m/%Y") }}</small>
+              <small class="text-muted">{{ post.data_post.strftime("%d/%m/%Y - %H:%M") }}</small>
             </div>
             <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.titulo }}</a></h2>
             <small class="article-content">{{ post.empresa }}</small>
@@ -22,9 +22,13 @@
               <small class="article-content"><a class="" target="_blank" href="{{ post.link }}">{{ post.link }}</a></small>
             </p>
                 {% if post.tipo_post == 'vaga' %}
-                  <small class="article-content">Publicação do tipo {{ post.tipo_post }} de nível {{ post.nivel_vaga }} em formato {{ post.mod_vaga }}.</small>
+                      <span class="badge bg-steel">{{ post.tipo_post }}</span>
+                      <span class="badge bg-steel">{{ post.nivel_vaga }}</span>
+                      <span class="badge bg-steel">{{ post.mod_vaga }}</span>
                 {% else %}
-                  <small class="article-content">Publicação do tipo {{ post.tipo_post }} de nível {{ post.nivel_curso }} em formato {{ post.mod_curso }}.</small>
+                      <span class="badge bg-steel">{{ post.tipo_post }}</span>
+                      <span class="badge bg-steel">{{ post.nivel_vaga }}</span>
+                      <span class="badge bg-steel">{{ post.mod_vaga }}</span>
                 {% endif %}
           </div>
         </article>

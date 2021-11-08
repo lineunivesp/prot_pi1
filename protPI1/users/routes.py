@@ -79,7 +79,7 @@ def user_posts(username):
     page = request.args.get('page', 1, type=int)
     user = User.query.filter_by(username=username).first_or_404()
     posts = Post.query.filter_by(author=user).order_by(Post.data_post.desc()).paginate(page=page, per_page=5)
-    return render_template('user_posts.html', title=f'Publicações de {user.username}', posts=posts, user=user)
+    return render_template('user_posts.html', title=f'Publicações de {user.nome}', posts=posts, user=user)
 
 
 # Redefinir senha  1 - email
@@ -93,7 +93,7 @@ def reset_request():
         send_reset_email(user)
         flash('Um email foi enviado com instruções para redefinir sua senha.', 'info')
         return redirect(url_for('users.login'))
-     return render_template('reset_request.html', title='Reset Password', form=form)
+     return render_template('reset_request.html', title='Redefinindo senha', form=form)
 
 
 # Redefinir senha 2 - senha
@@ -112,4 +112,4 @@ def reset_token(token):
          db.session.commit()
          flash('Sua senha foi atualizada! Agora você está apto para logar!', 'success')
          return redirect(url_for('users.login'))
-     return render_template('reset_token.html', title='Reset Password', form=form)
+     return render_template('reset_token.html', title='Redefinindo senha', form=form)
